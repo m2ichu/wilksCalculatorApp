@@ -9,7 +9,7 @@ const HomePage = () => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
-      navigate('/dashboard'); // Przekieruj do panelu z wynikami, jeśli użytkownik jest zalogowany
+      navigate('/dashboard'); 
     } else {
       setIsLoggedIn(false);
     }

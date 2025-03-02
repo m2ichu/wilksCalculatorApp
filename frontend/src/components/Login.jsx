@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useUser } from '../context/userData';
+
+
+
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     emailOrUsername: '',
     password: '',
   });
+
+  const navigate = useNavigate(); // Hook do przekierowania
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/dashboard'); 
+    } 
+  }, [navigate]);
+
+  const {setUserData} = useUser();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,15 +56,11 @@ const LoginForm = () => {
       const data = await res.json();
       toast.success(data.message || 'Zalogowano pomyślnie');
 
+
       localStorage.setItem('token', data.token);
 
-      setTimeout(() => {
-        console.log("waitin");
-      }, 2000)
-
-
-      window.location.href = '/dashboard';
-
+      setUserData(data.user);
+      location.reload();
     } catch (error) {
       console.error('Network error:', error.message);
       toast.error(`Błąd serwera: ${error.message}`);
