@@ -1,7 +1,11 @@
-const express = require('express')
-const User = require('../models/user')
-const dotenv = require('dotenv')
-const verifyToken = require('../middleware/verifyToken')
+// const express = require('express')
+// const User = require('../models/user')
+// const dotenv = require('dotenv')
+// const verifyToken = require('../middleware/verifyToken')
+import express from 'express'
+import User from '../models/user.js'
+import dotenv from 'dotenv'
+import verifyToken from '../middleware/verifyToken.js'
 
 dotenv.config()
 

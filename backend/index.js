@@ -1,9 +1,18 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const userRoutes = require('./routes/userRoutes');
-const adminRoutes = require('./routes/adminRoutes');
-const cors = require('cors');
+// const express = require('express');
+// const mongoose = require('mongoose');
+// const dotenv = require('dotenv');
+// const userRoutes = require('./routes/userRoutes');
+// const adminRoutes = require('./routes/adminRoutes');
+// const cors = require('cors');
+
+
+import express from 'express'
+import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+import userRoutes from './routes/userRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
+import cors from 'cors'
+import path from 'path'
 
 dotenv.config();
 const app = express();

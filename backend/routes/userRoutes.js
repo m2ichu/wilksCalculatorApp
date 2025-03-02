@@ -1,9 +1,16 @@
-const express = require('express');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const dotenv = require('dotenv');
-const bcrypt = require('bcryptjs');
-const verifyToken = require('../middleware/verifyToken');
+// const express = require('express');
+// const jwt = require('jsonwebtoken');
+// const User = require('../models/user');
+// const dotenv = require('dotenv');
+// const bcrypt = require('bcryptjs');
+// const verifyToken = require('../middleware/verifyToken');
+
+import express from 'express'
+import jwt from 'jsonwebtoken'
+import User from '../models/user.js'
+import dotenv from 'dotenv'
+import bcrypt from 'bcryptjs'
+import verifyToken from '../middleware/verifyToken.js'
 
 dotenv.config();
 

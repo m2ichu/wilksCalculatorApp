@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
 // Middleware do weryfikacji tokena
 const verifyToken = (req, res, next) => {
