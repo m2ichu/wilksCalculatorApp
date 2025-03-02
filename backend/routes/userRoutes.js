@@ -7,7 +7,8 @@
 
 import express from 'express'
 import jwt from 'jsonwebtoken'
-import User from '../models/user.js'
+import User from '../models/user.js';
+
 import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
 import verifyToken from '../middleware/verifyToken.js'
@@ -151,4 +152,4 @@ router.post('/logout', verifyToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router
