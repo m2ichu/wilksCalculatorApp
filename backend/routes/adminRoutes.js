@@ -11,21 +11,24 @@ dotenv.config()
 
 const router = express.Router()
 
-const isAdmin = (req, res, next) => {
-	const userId = req.userId
+const isAdmin = async (req, res, next) => {
+  const userId = req.userId;
 
-	User.findById(userId)
-		.then(user => {
-			if (user && user.isAdmin) {
-				next()
-			} else {
-				return res.status(403).json({ message: 'Brak uprawnień' })
-			}
-		})
-		.catch(() => {
-			return res.status(403).json({ message: 'Brak uprawnień' })
-		})
-}
+  if (!userId) {
+    return res.status(403).json({ message: 'Brak uprawnień' });
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (user && user.isAdmin) {
+      next();
+    } else {
+      return res.status(403).json({ message: 'Brak uprawnień' });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: 'Błąd serwera' });
+  }
+};
 
 router.get('/unconfirmed', verifyToken, isAdmin, async (req, res) => {
 	try {
@@ -42,23 +45,22 @@ router.get('/unconfirmed', verifyToken, isAdmin, async (req, res) => {
 })
 
 router.put('/confirmUser', verifyToken, isAdmin, async (req, res) => {
-	const { id } = req.body
+  const { id } = req.body;
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: 'Użytkownik nie znaleziony' });
+    }
 
-	try {
-		const user = await User.findById(id)
-		if (!user) {
-			return res.status(404).json({ message: 'Użytkownik nie znaleziony' })
-		}
+    user.isConfirmed = true;
+    user.confirmedAt = Date.now();
+    await user.save();
 
-		user.isConfirmed = true
-		user.confirmedAt = Date.now()
-		await user.save()
-
-		res.json({ message: 'Użytkownik zatwierdzony' })
-	} catch (error) {
-		res.status(500).json({ message: 'Błąd serwera' })
-	}
-})
+    res.json({ message: 'Użytkownik zatwierdzony' });
+  } catch (error) {
+    res.status(500).json({ message: 'Błąd serwera' });
+  }
+});
 
 router.get('/bestResults', verifyToken, isAdmin, async (req, res) => {
 	const { sortBy } = req.body
