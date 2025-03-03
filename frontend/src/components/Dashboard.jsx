@@ -29,7 +29,7 @@ const Dashboard = () => {
   const fetchResults = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/api/users/getResults?userId=${user._id}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
+        `/api/users/getResults?userId=${user._id}&sortBy=${sortBy}&sortOrder=${sortOrder}`,
         {
           method: 'GET',
           headers: {
@@ -112,7 +112,7 @@ const Dashboard = () => {
     console.log('Dane formularza:', formData, 'Wilks:', wilksScore);
 
     try {
-      const response = await fetch('http://localhost:3000/api/users/addResult', {
+      const response = await fetch('/api/users/addResult', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

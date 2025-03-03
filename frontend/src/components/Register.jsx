@@ -45,7 +45,7 @@ const RegisterForm = () => {
       // Remove confirmPassword before sending to the API
       delete updatedData.confirmPassword;
 
-      const res = await fetch('http://localhost:3000/api/users/register', {
+      const res = await fetch('/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
