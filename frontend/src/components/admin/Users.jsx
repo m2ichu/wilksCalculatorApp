@@ -6,10 +6,10 @@ const Users = () => {
 	const [users, setUsers] = useState([])
 	const [error, setError] = useState(null)
 	const navigate = useNavigate()
+  const user = JSON.parse(localStorage.getItem('userData'))
 
 	useEffect(() => {
 		const token = localStorage.getItem('token')
-		const user = JSON.parse(localStorage.getItem('userData'))
 		if (!token || !user) navigate('/')
 		if (!user.isAdmin) navigate('/dashboard')
 	}, [navigate])
@@ -38,6 +38,7 @@ const Users = () => {
 		// Potwierdzenie przed usunięciem
 		const confirmDelete = window.confirm('Are you sure you want to delete this user?')
 		if (!confirmDelete) return // Anuluj, jeśli użytkownik nie potwierdzi
+    if(userId == user._id) return;
 
 		try {
 			await axios.delete('/api/admin/deleteUser', {
