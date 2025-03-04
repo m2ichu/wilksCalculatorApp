@@ -52,12 +52,12 @@ const Navbar = () => {
 						<>
 							{user.isAdmin && (
 								<>
-								<Link
+									<Link
 										to="/allUsers"
 										className="bg-gradient-to-r from-blue-800 to-blue-600 hover:from-blue-900 hover:to-blue-800 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
 										Users
 									</Link>
-								<Link
+									<Link
 										to="/bestResults"
 										className="bg-gradient-to-r from-blue-800 to-blue-600 hover:from-blue-900 hover:to-blue-800 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105">
 										Best
@@ -117,7 +117,7 @@ const Navbar = () => {
 							<>
 								{user.isAdmin && (
 									<>
-									<li>
+										<li>
 											<Link
 												to="/allUsers"
 												className="block bg-gradient-to-b from-blue-900 to-blue-700 hover:from-blue-900 hover:to-blue-800 text-white font-semibold py-3 px-12 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 text-center"
@@ -125,7 +125,7 @@ const Navbar = () => {
 												Users
 											</Link>
 										</li>
-									<li>
+										<li>
 											<Link
 												to="/bestResults"
 												className="block bg-gradient-to-b from-blue-900 to-blue-700 hover:from-blue-900 hover:to-blue-800 text-white font-semibold py-3 px-12 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 text-center"
@@ -141,7 +141,7 @@ const Navbar = () => {
 												Dashboard
 											</Link>
 										</li>
-                    <li>
+										<li>
 											<Link
 												to="/unconfirmed"
 												className="block bg-gradient-to-b from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white font-semibold py-3 px-12 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 text-center"

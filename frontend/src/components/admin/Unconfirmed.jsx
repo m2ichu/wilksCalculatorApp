@@ -12,7 +12,7 @@ const UnconfirmedUsers = () => {
 		return new Date(dateString).toLocaleDateString('pl-PL', options)
 	}
 
-	const navigate = useNavigate() // Hook do przekierowania
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		const token = localStorage.getItem('token')
@@ -32,7 +32,7 @@ const UnconfirmedUsers = () => {
 	useEffect(() => {
 		const fetchUnconfirmedUsers = async () => {
 			try {
-				const token = localStorage.getItem('token') // Pobierz token z localStorage
+				const token = localStorage.getItem('token')
 				const response = await axios.get('/api/admin/unconfirmed', {
 					headers: {
 						Authorization: `Bearer ${token}`,
@@ -55,7 +55,6 @@ const UnconfirmedUsers = () => {
 		fetchUnconfirmedUsers()
 	}, [])
 
-	// Funkcja do potwierdzania użytkownika
 	const handleConfirmUser = async id => {
 		try {
 			const token = localStorage.getItem('token')
@@ -70,7 +69,6 @@ const UnconfirmedUsers = () => {
 			)
 
 			if (response.status === 200) {
-				// Aktualizuj listę użytkowników po potwierdzeniu
 				setUsers(prevUsers => prevUsers.filter(user => user._id !== id))
 				alert('Użytkownik został pomyślnie zatwierdzony')
 			}
@@ -89,12 +87,12 @@ const UnconfirmedUsers = () => {
 	}
 
 	return (
-		<div className="p-6 max-w-6xl mx-auto w-full ">
+		<div className="p-6 max-w-6xl mx-auto w-full">
 			<h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Niepotwierdzeni użytkownicy</h1>
 			{error ? (
 				<p className="text-red-500 text-center text-lg">{'brak niepotwierdzonych użytkowników'}</p>
 			) : (
-				<>
+				<div className="overflow-x-auto">
 					<table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
 						<thead className="bg-gray-100">
 							<tr>
@@ -125,7 +123,7 @@ const UnconfirmedUsers = () => {
 							))}
 						</tbody>
 					</table>
-				</>
+				</div>
 			)}
 		</div>
 	)

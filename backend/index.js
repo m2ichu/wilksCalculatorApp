@@ -6,28 +6,29 @@ import adminRoutes from './routes/adminRoutes.js'
 import cors from 'cors'
 import path from 'path'
 
-dotenv.config();
-const app = express();
+dotenv.config()
+const app = express()
 
 const __dirname = path.resolve()
 
-app.use(express.json());
-app.use(cors());
+app.use(express.json())
+app.use(cors())
 
-app.use('/api/users', userRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/users', userRoutes)
+app.use('/api/admin', adminRoutes)
 
-app.use(express.static(path.join(__dirname, '/frontend/dist')));
+app.use(express.static(path.join(__dirname, '/frontend/dist')))
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'))
-});
+	res.sendFile(path.join(__dirname, 'frontend', 'dist', 'index.html'))
+})
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Połączono z MongoDB'))
-  .catch((err) => console.log('Błąd połączenia z MongoDB:', err));
+mongoose
+	.connect(process.env.MONGO_URI)
+	.then(() => console.log('Połączono z MongoDB'))
+	.catch(err => console.log('Błąd połączenia z MongoDB:', err))
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
-  console.log(`Serwer działa na porcie ${PORT}`);
-});
+	console.log(`Serwer działa na porcie ${PORT}`)
+})

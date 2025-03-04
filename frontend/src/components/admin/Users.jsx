@@ -6,13 +6,13 @@ const Users = () => {
 	const [users, setUsers] = useState([])
 	const [error, setError] = useState(null)
 	const navigate = useNavigate()
-  const user = JSON.parse(localStorage.getItem('userData'))
+	const user = JSON.parse(localStorage.getItem('userData'))
 
 	useEffect(() => {
 		const token = localStorage.getItem('token')
 		if (!token || !user) navigate('/')
 		if (!user.isAdmin) navigate('/dashboard')
-	}, [navigate])
+	}, [navigate, user])
 
 	useEffect(() => {
 		const fetchUsers = async () => {
@@ -35,10 +35,9 @@ const Users = () => {
 	}, [])
 
 	const handleDelete = async userId => {
-		// Potwierdzenie przed usunięciem
 		const confirmDelete = window.confirm('Are you sure you want to delete this user?')
-		if (!confirmDelete) return // Anuluj, jeśli użytkownik nie potwierdzi
-    if(userId == user._id) return;
+		if (!confirmDelete) return 
+		if (userId == user._id) return
 
 		try {
 			await axios.delete('/api/admin/deleteUser', {

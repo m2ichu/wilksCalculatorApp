@@ -1,19 +1,19 @@
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'
 
 const verifyToken = (req, res, next) => {
-  const token = req.header('Authorization')?.replace('Bearer ', ''); 
+	const token = req.header('Authorization')?.replace('Bearer ', '')
 
-  if (!token) {
-    return res.status(401).json({ message: 'Brak tokenu autoryzacyjnego' });
-  }
+	if (!token) {
+		return res.status(401).json({ message: 'Brak tokenu autoryzacyjnego' })
+	}
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId; 
-    next();
-  } catch (error) {
-    return res.status(401).json({ message: 'Nieprawidłowy token' });
-  }
-};
+	try {
+		const decoded = jwt.verify(token, process.env.JWT_SECRET)
+		req.userId = decoded.userId
+		next()
+	} catch (error) {
+		return res.status(401).json({ message: 'Nieprawidłowy token' })
+	}
+}
 
-export default verifyToken;
+export default verifyToken
