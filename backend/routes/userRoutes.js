@@ -1,14 +1,6 @@
-// const express = require('express');
-// const jwt = require('jsonwebtoken');
-// const User = require('../models/user');
-// const dotenv = require('dotenv');
-// const bcrypt = require('bcryptjs');
-// const verifyToken = require('../middleware/verifyToken');
-
 import express from 'express'
 import jwt from 'jsonwebtoken'
 import User from '../models/user.js';
-
 import dotenv from 'dotenv'
 import bcrypt from 'bcryptjs'
 import verifyToken from '../middleware/verifyToken.js'
@@ -53,8 +45,6 @@ router.post('/register', async (req, res) => {
   }
 });
 
-
-
 router.post('/login', async (req, res) => {
   const { emailOrUsername, password } = req.body; 
 
@@ -84,8 +74,6 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
-
 router.post('/addResult', verifyToken ,async (req, res) => {
   const { userId, weight, powerliftingSumWeight, points } = req.body;
 
@@ -104,8 +92,6 @@ router.post('/addResult', verifyToken ,async (req, res) => {
     res.status(500).json({ message: 'Błąd serwera' });
   }
 });
-
-
 
 router.get('/getResults', verifyToken ,async (req, res) => {
   const { userId, sortBy, sortOrder = 'asc' } = req.query;

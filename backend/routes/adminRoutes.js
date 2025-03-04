@@ -1,7 +1,3 @@
-// const express = require('express')
-// const User = require('../models/user')
-// const dotenv = require('dotenv')
-// const verifyToken = require('../middleware/verifyToken')
 import express from 'express'
 import User from '../models/user.js'
 import dotenv from 'dotenv'
@@ -63,33 +59,55 @@ router.put('/confirmUser', verifyToken, isAdmin, async (req, res) => {
 });
 
 router.get('/bestResults', verifyToken, isAdmin, async (req, res) => {
-	const { sortBy } = req.body
+  try {
+    const users = await User.find({ isConfirmed: true }).select('username firstName lastName email results');
+    
+    if (!users.length) {
+      return res.status(404).json({ message: 'No confirmed users found' });
+    }
 
-	const sortOptions = ['weight', 'powerliftingSumWeight', 'date', 'points']
-	const sortField = sortOptions.includes(sortBy) ? sortBy : 'date'
+    const usersWithBestResult = users.map(user => {
+      if (!user.results || user.results.length === 0) {
+        return {
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          bestResult: null,
+        };
+      }
 
-	try {
-		const users = await User.find({ isConfirmed: true }).select('username firstName lastName email results')
+      // Znajdź najlepszy wynik (np. z najwyższymi punktami, jeśli inne pola równe)
+      const bestResult = user.results.reduce((best, current) =>
+        current.points > best.points ? current : best
+      );
 
-		if (!users.length) {
-			return res.status(404).json({ message: 'Brak użytkowników z potwierdzonymi kontami' })
-		}
+      return {
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        bestResult: {
+          weight: bestResult.weight,
+          powerliftingSumWeight: bestResult.powerliftingSumWeight,
+          points: bestResult.points,
+          date: new Date(bestResult.date).toLocaleDateString('pl-PL', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          }),
+        },
+      };
+    });
 
-		users.forEach(user => {
-			user.results.sort((a, b) => {
-				if (sortField === 'date') {
-					return new Date(b.date) - new Date(a.date)
-				}
-				return b[sortField] - a[sortField]
-			})
-		})
+    res.json({ users: usersWithBestResult }); // Wysyłamy posortowane obiekty, ale kolejność zostawiamy frontendowi
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 
-		res.json({ users })
-	} catch (error) {
-		console.error(error)
-		res.status(500).json({ message: 'Błąd serwera' })
-	}
-})
+
 
 router.get('/confirmedUsers', verifyToken, isAdmin, async (req, res) => {
 	try {
