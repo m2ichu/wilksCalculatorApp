@@ -59,55 +59,34 @@ router.put('/confirmUser', verifyToken, isAdmin, async (req, res) => {
 });
 
 router.get('/bestResults', verifyToken, isAdmin, async (req, res) => {
-  try {
-    const users = await User.find({ isConfirmed: true }).select('username firstName lastName email results');
-    
-    if (!users.length) {
-      return res.status(404).json({ message: 'No confirmed users found' });
-    }
+	const { sortBy } = req.query; // Use req.query instead of req.body for GET requests
 
-    const usersWithBestResult = users.map(user => {
-      if (!user.results || user.results.length === 0) {
-        return {
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          bestResult: null,
-        };
-      }
+	const sortOptions = ['weight', 'powerliftingSumWeight', 'date', 'points'];
+	const sortField = sortOptions.includes(sortBy) ? sortBy : 'date';
 
-      // Znajdź najlepszy wynik (np. z najwyższymi punktami, jeśli inne pola równe)
-      const bestResult = user.results.reduce((best, current) =>
-        current.points > best.points ? current : best
-      );
+	try {
+			const users = await User.find({ isConfirmed: true }).select('username firstName lastName email results');
 
-      return {
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        bestResult: {
-          weight: bestResult.weight,
-          powerliftingSumWeight: bestResult.powerliftingSumWeight,
-          points: bestResult.points,
-          date: new Date(bestResult.date).toLocaleDateString('pl-PL', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          }),
-        },
-      };
-    });
+			if (!users.length) {
+					return res.status(404).json({ message: 'Brak użytkowników z potwierdzonymi kontami' });
+			}
 
-    res.json({ users: usersWithBestResult }); // Wysyłamy posortowane obiekty, ale kolejność zostawiamy frontendowi
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
+			// Sort each user's results individually
+			users.forEach(user => {
+					user.results.sort((a, b) => {
+							if (sortField === 'date') {
+									return new Date(b.date) - new Date(a.date);
+							}
+							return b[sortField] - a[sortField];
+					});
+			});
+
+			res.json({ users });
+	} catch (error) {
+			console.error('Error fetching best results:', error);
+			res.status(500).json({ message: 'Błąd serwera' });
+	}
 });
-
-
 
 router.get('/confirmedUsers', verifyToken, isAdmin, async (req, res) => {
 	try {
