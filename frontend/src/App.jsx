@@ -6,6 +6,7 @@ import LoginForm from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Unconfirmed from "./components/admin/Unconfirmed";
 import BestResults from "./components/admin/BestResults";
+import Users from "./components/admin/Users";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/unconfirmed" element={<Unconfirmed />} />
         <Route path="/bestResults" element={<BestResults />} />
+        <Route path="/allUsers" element={<Users />} />
       </Routes>
     </>
   )

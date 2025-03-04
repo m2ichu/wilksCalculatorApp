@@ -90,39 +90,39 @@ router.get('/bestResults', verifyToken, isAdmin, async (req, res) => {
 
 router.get('/confirmedUsers', verifyToken, isAdmin, async (req, res) => {
 	try {
-		const users = await User.find({ isConfirmed: true }).select(
-			'firstName lastName username email _id confirmedAt createdAt'
-		)
+			const users = await User.find({ isConfirmed: true }).select(
+					'firstName lastName username email _id confirmedAt createdAt'
+			);
 
-		if (!users.length) {
-			return res.status(404).json({ message: 'Brak użytkowników z potwierdzonymi kontami' })
-		}
+			if (!users.length) {
+					return res.status(404).json({ message: 'Brak użytkowników z potwierdzonymi kontami' });
+			}
 
-		res.json({ users })
+			res.json({ users });
 	} catch (error) {
-		res.status(500).json({ message: 'Błąd serwera' })
+			res.status(500).json({ message: 'Błąd serwera' });
 	}
-})
+});
 
 router.delete('/deleteUser', verifyToken, isAdmin, async (req, res) => {
-	const { id } = req.body
+	const { id } = req.body;
 
 	if (!id) {
-		return res.status(400).json({ message: 'User ID is required' })
+			return res.status(400).json({ message: 'User ID is required' });
 	}
 
 	try {
-		const user = await User.findByIdAndDelete(id)
+			const user = await User.findByIdAndDelete(id);
 
-		if (!user) {
-			return res.status(404).json({ message: 'User not found' })
-		}
+			if (!user) {
+					return res.status(404).json({ message: 'User not found' });
+			}
 
-		res.json({ message: 'User has been deleted successfully' })
+			res.json({ message: 'User has been deleted successfully' });
 	} catch (error) {
-		console.error(error)
-		res.status(500).json({ message: 'Server error' })
+			console.error(error);
+			res.status(500).json({ message: 'Server error' });
 	}
-})
+});
 
 export default router
