@@ -8,10 +8,10 @@
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "type": "module",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": ["wilks"],
+  "author": "Michal Zachara ",
+  "license": "MIT",
+  "description": "App for calculating Wilks score",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
